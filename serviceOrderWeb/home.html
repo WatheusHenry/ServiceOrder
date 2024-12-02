@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestão de Ordens de Serviço</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <div class="container mt-4">
+      <h1 class="text-center">Gestão de Ordens de Serviço</h1>
+
+      <!-- Navegação com Tabs -->
+      <ul class="nav nav-tabs" id="tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link active"
+            id="orders-tab"
+            data-bs-toggle="tab"
+            href="#orders"
+            role="tab"
+            aria-controls="orders"
+            aria-selected="true"
+            >Ordens de Serviço</a
+          >
+        </li>
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link"
+            id="products-tab"
+            data-bs-toggle="tab"
+            href="#products"
+            role="tab"
+            aria-controls="products"
+            aria-selected="false"
+            >Produtos</a
+          >
+        </li>
+      </ul>
+
+      <!-- Conteúdo das Abas -->
+      <div class="tab-content mt-3" id="tabsContent">
+        <!-- Abas Ordens de Serviço -->
+        <div
+          class="tab-pane fade show active"
+          id="orders"
+          role="tabpanel"
+          aria-labelledby="orders-tab"
+        >
+          <div class="my-3">
+            <button
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#addOrderModal"
+            >
+              Adicionar Ordem de Serviço
+            </button>
+          </div>
+
+          <table class="table table-bordered">
+            <thead class="table-dark">
+              <tr>
+                <th>#</th>
+                <th>Data Abertura</th>
+                <th>Consumidor</th>
+                <th>CPF</th>
+                <th>Produto</th>
+                <th>Defeito</th>
+                <th>Solução</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody">
+              <tr>
+                <td colspan="8" class="text-center">Carregando...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Abas Produtos -->
+        <div
+          class="tab-pane fade"
+          id="products"
+          role="tabpanel"
+          aria-labelledby="products-tab"
+        >
+          <div class="my-3">
+            <button
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#addProductModal"
+            >
+              Adicionar Produto
+            </button>
+          </div>
+
+          <table class="table table-bordered">
+            <thead class="table-dark">
+              <tr>
+                <th>#</th>
+                <th>Nome</th>
+                <th>Tempo de garantia</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="productsTableBody">
+              <tr>
+                <td colspan="4" class="text-center">Carregando...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para Adicionar Ordem de Serviço -->
+    <div class="modal fade" id="addOrderModal" tabindex="-1" aria-labelledby="addOrderModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addOrderModalLabel">Adicionar Ordem de Serviço</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="addOrderForm">
+                <div class="mb-3">
+                  <label for="orderDate" class="form-label">Data de Abertura</label>
+                  <input type="date" class="form-control" id="orderDate" required />
+                </div>
+                <div class="mb-3">
+                  <label for="customerName" class="form-label">Nome do Consumidor</label>
+                  <input type="text" class="form-control" id="customerName" required />
+                </div>
+                <div class="mb-3">
+                  <label for="customerCpf" class="form-label">CPF do Consumidor</label>
+                  <input type="text" class="form-control" id="customerCpf" required />
+                </div>
+                <div class="mb-3">
+                  <label for="product" class="form-label">Produto</label>
+                  <select class="form-select" id="productSelect" aria-label="Selecione o produto">
+                    <option value="" disabled selected>Selecione um produto</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Adicionar</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+    <!-- Modal para Adicionar Produto -->
+    <div
+      class="modal fade"
+      id="addProductModal"
+      tabindex="-1"
+      aria-labelledby="addProductModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addProductModalLabel">
+              Adicionar Produto
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="addProductForm">
+              <div class="mb-3">
+                <label for="productName" class="form-label">Nome do Produto</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="productName"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="warranty_time" class="form-label">Tempo de garantia</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  id="warranty_time"
+
+                  required
+                ></input>
+              </div>
+              <button type="submit" class="btn btn-primary">Adicionar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const API_BASE_URL = "http://localhost:8000/api";
+
+      document.addEventListener("DOMContentLoaded", () => {
+        loadProducts();
+        loadOrders();
+        console.log(localStorage.getItem("token"));
+
+        document
+          .getElementById("addOrderForm")
+          .addEventListener("submit", addOrder);
+        document
+          .getElementById("addProductForm")
+          .addEventListener("submit", addProduct);
+      });
+      let products = [];
+      const token = localStorage.getItem("token");
+
+      async function loadOrders() {
+        const tableBody = document.getElementById("ordersTableBody");
+        tableBody.innerHTML =
+          '<tr><td colspan="8" class="text-center">Carregando...</td></tr>';
+
+        const token = localStorage.getItem("token");
+        if (!token) {
+          alert("Token de autenticação ausente");
+          return;
+        }
+        try {
+          const response = await axios.get(`${API_BASE_URL}/service-orders`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const orders = response.data;
+
+          if (orders.length === 0) {
+            tableBody.innerHTML =
+              '<tr><td colspan="8" class="text-center">Nenhuma ordem encontrada</td></tr>';
+            return;
+          }
+
+          tableBody.innerHTML = "";
+          orders.forEach((order, index) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${index + 1}</td>
+              <td>${order.open_date}</td>
+              <td>${order.customer_name}</td>
+              <td>${order.customer_cpf}</td>
+              <td>${order.product.name}</td>
+              <td>${order.customer_complaint || "Não informado"}</td>
+              <td>${order.technical_solution || "Não informada"}</td>
+              <td>
+                <button
+                  class="btn btn-danger"
+                  onclick="deleteOrder(${order.id})"
+                >
+                  Deletar
+                </button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        } catch (error) {
+          tableBody.innerHTML =
+            '<tr><td colspan="8" class="text-center">Erro ao carregar ordens</td></tr>';
+        }
+      }
+
+      async function addOrder(event) {
+        event.preventDefault();
+        const orderDate = document.getElementById("orderDate").value;
+        const customerName = document.getElementById("customerName").value;
+        const customerCpf = document.getElementById("customerCpf").value;
+        const productSelected = document.getElementById("productSelect").value;
+
+
+        try {
+          const response = await axios.post(
+            `${API_BASE_URL}/service-orders`,
+            {
+                open_date: orderDate,
+              customer_name: customerName,
+              customer_cpf: customerCpf,
+              product_id: productSelected,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          alert("Ordem de serviço criada com sucesso!");
+          loadOrders();
+          const modal = bootstrap.Modal.getInstance(
+            document.getElementById("addOrderModal")
+          );
+          modal.hide();
+        } catch (error) {
+          alert("Erro ao criar a ordem de serviço");
+        }
+      }
+      async function deleteOrder(orderId) {
+        if (confirm("Você tem certeza que deseja excluir esta ordem de serviço?")) {
+          try {
+            await axios.delete(`${API_BASE_URL}/service-orders/${orderId}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            alert("Ordem de serviço deletada com sucesso!");
+            loadOrders();
+          } catch (error) {
+            alert("Erro ao deletar a ordem de serviço");
+          }
+        }
+      }
+
+      async function loadProducts() {
+        const tableBody = document.getElementById("productsTableBody");
+        tableBody.innerHTML =
+          '<tr><td colspan="4" class="text-center">Carregando...</td></tr>';
+
+        try {
+          const response = await axios.get(`${API_BASE_URL}/products`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+            products = response.data;
+
+          if (products.length === 0) {
+            tableBody.innerHTML =
+              '<tr><td colspan="4" class="text-center">Nenhum produto encontrado</td></tr>';
+            return;
+          }
+
+          tableBody.innerHTML = "";
+          products.forEach((product, index) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${index + 1}</td>
+              <td>${product.name}</td>
+              <td>${product.warranty_time}</td>
+              <td>
+                <button class="btn btn-danger" onclick="deleteProduct(${product.id})">Deletar</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+
+            productSelect.innerHTML = '<option value="" disabled selected>Selecione um produto</option>';
+            products.forEach(product => {
+            const option = document.createElement("option");
+            option.value = product.id;
+            option.textContent = product.name; 
+            productSelect.appendChild(option);
+            });
+        } catch (error) {
+            productSelect.innerHTML = '<option value="" disabled>Erro ao carregar produtos</option>';
+          tableBody.innerHTML =
+            '<tr><td colspan="4" class="text-center">Erro ao carregar produtos</td></tr>';
+            
+        }
+      }
+
+      async function addProduct(event) {
+        event.preventDefault();
+
+        const productName = document.getElementById("productName").value;
+        const warranty_time = document.getElementById("warranty_time").value;
+
+        try {
+          const response = await axios.post(
+            `${API_BASE_URL}/products`,
+            {
+              name: productName,
+              warranty_time: warranty_time,
+              status:"ativo"
+            },
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+
+          alert("Produto adicionado com sucesso!");
+          loadProducts();
+          // Fechar o modal após a criação
+          const modal = bootstrap.Modal.getInstance(
+            document.getElementById("addProductModal")
+          );
+          modal.hide();
+        } catch (error) {
+          alert("Erro ao adicionar produto");
+        }
+      }
+
+      async function deleteProduct(productId) {
+        if (confirm("Você tem certeza que deseja excluir este produto?")) {
+          try {
+            await axios.delete(`${API_BASE_URL}/products/${productId}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            alert("Produto deletado com sucesso!");
+            loadProducts();
+          } catch (error) {
+            alert("Erro ao deletar o produto");
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

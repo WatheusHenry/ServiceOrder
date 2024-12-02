@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Ordem n° {{orderData?.id}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="edit-order-content">
+  <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+    <!-- Exibição de Informações -->
+    <div class="info-container">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ orderData?.product?.name || "Carregando..." }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p><strong>Cliente:</strong> {{ orderData?.customer_name || "Carregando..." }}</p>
+          <p><strong>CPF:</strong> {{ orderData?.customer_cpf || "Carregando..." }}</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Problema do Cliente -->
+    <ion-item lines="inset" class="input-item">
+      <ion-label position="stacked">Problema do Cliente</ion-label>
+      <ion-textarea formControlName="customer_complaint" placeholder="Descreva o problema"></ion-textarea>
+    </ion-item>
+
+    <!-- Solução Técnica -->
+    <ion-item lines="inset" class="input-item">
+      <ion-label position="stacked">Solução Técnica</ion-label>
+      <ion-textarea formControlName="technical_solution" placeholder="Descreva a solução"></ion-textarea>
+    </ion-item>
+
+    <!-- Botão -->
+    <div class="button-container">
+      <ion-button expand="full" color="success" type="submit" [disabled]="orderForm.invalid">
+        Salvar Alterações
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

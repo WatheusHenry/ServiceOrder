@@ -1,0 +1,56 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #f9f9f9; /* Cor de fundo suave */
+}
+
+ion-card {
+  width: 100%;
+  max-width: 500px; /* Aumentando a largura máxima */
+  padding: 20px; /* Adicionando padding */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombras suaves */
+  border-radius: 16px; /* Bordas arredondadas */
+  background-color: #fff;
+}
+
+ion-card-header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+ion-card-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+ion-item {
+  margin-bottom: 20px;
+}
+
+ion-label {
+  font-size: 14px;
+  color: #555;
+}
+
+ion-input {
+  font-size: 16px;
+}
+
+ion-button {
+  margin-top: 20px;
+  --background: #3880ff; /* Cor do botão */
+  --color: white;
+  font-weight: bold;
+}
+
+.forgot-password {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.forgot-password ion-button {
+  --color: #3880ff;
+}
